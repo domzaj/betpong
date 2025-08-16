@@ -43,7 +43,7 @@ auth.onAuthStateChanged(async (user)=>{
   state.uid = user.uid;
 
   // isHost?
-  const adminDoc = await db.doc(`config/admins/${state.uid}`).get();
+  const adminDoc = await db.doc(`admins/${state.uid}`).get();
   state.isHost = adminDoc.exists;
   $('adminPanel').classList.toggle('hidden', !state.isHost);
 
