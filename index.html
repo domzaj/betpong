@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BetPong</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <h1>BetPong</h1>
+    <div id="userBox" class="row">
+      <span id="uid"></span>
+      <span id="emailBadge"></span>
+      <span id="balance"></span>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>Konto</h2>
+    <div id="authBox" class="row">
+      <input id="email" type="email" placeholder="email">
+      <input id="pass" type="password" placeholder="hasło (min 6)">
+      <button id="signup">Rejestracja</button>
+      <button id="login">Logowanie</button>
+      <button id="logout">Wyloguj</button>
+      <button id="reset">Reset hasła</button>
+      <small id="authMsg"></small>
+    </div>
+    <div class="row">
+      <input id="nick" placeholder="Twój nick" />
+      <button id="saveNick">Zapisz nick</button>
+    </div>
+  </section>
+
+  <section id="adminPanel" class="card hidden">
+    <h2>Panel hosta</h2>
+    <div class="row">
+      <input id="p1" placeholder="Zawodnik 1">
+      <input id="p2" placeholder="Zawodnik 2">
+      <input id="startAt" type="datetime-local">
+      <button id="addMatch">Dodaj mecz</button>
+      <button id="lockAll">Zamknij wszystkie otwarte</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Mecze</h2>
+    <div id="matches"></div>
+  </section>
+
+  <section class="card">
+    <h2>Twoje zakłady</h2>
+    <div id="myBets"></div>
+  </section>
+
+  <section class="card">
+    <h2>Ranking</h2>
+    <div id="leaderboard"></div>
+  </section>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
