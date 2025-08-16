@@ -12,73 +12,98 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <header class="bar">
-    <h1>BetPong</h1>
-    <div class="row">
-      <span id="uid" class="muted"></span>
-      <span id="emailBadge" class="badge"></span>
-      <span id="balance" class="badge"></span>
-    </div>
-  </header>
+  <div class="app">
+    <header class="bar">
+      <h1>BetPong</h1>
+      <div class="row">
+        <button id="adminBtn" class="adminOnly hidden" title="Panel admina">🛡️</button>
+        <span id="uid" class="muted"></span>
+        <span id="emailBadge" class="badge"></span>
+        <span id="balance" class="badge"></span>
+      </div>
+    </header>
 
-  <!-- Tabs -->
-  <nav class="tabs">
-    <button class="tab active" data-tab="matchesTab">Mecze</button>
-    <button class="tab" data-tab="myBetsTab">Moje zakłady</button>
-    <button class="tab" data-tab="leaderboardTab">Ranking</button>
-    <button class="tab adminOnly hidden" data-tab="adminTab">Admin</button>
-  </nav>
+    <!-- Konto -->
+    <section class="card">
+      <h2>Konto</h2>
+      <div id="authBox" class="row wrap">
+        <input id="email" type="email" placeholder="email">
+        <input id="pass" type="password" placeholder="hasło (min 6)">
+        <button id="signup">Rejestracja</button>
+        <button id="login">Logowanie</button>
+        <button id="logout">Wyloguj</button>
+        <button id="reset">Reset hasła</button>
+        <small id="authMsg" class="muted"></small>
+      </div>
+      <div class="row wrap">
+        <input id="nick" placeholder="Twój nick" />
+        <button id="saveNick">Zapisz nick</button>
+        <small id="verifyWarn" class="warn hidden">Zweryfikuj email, aby obstawiać.</small>
+      </div>
+    </section>
 
-  <!-- Konto -->
-  <section class="card">
-    <h2>Konto</h2>
-    <div id="authBox" class="row wrap">
-      <input id="email" type="email" placeholder="email">
-      <input id="pass" type="password" placeholder="hasło (min 6)">
-      <button id="signup">Rejestracja</button>
-      <button id="login">Logowanie</button>
-      <button id="logout">Wyloguj</button>
-      <button id="reset">Reset hasła</button>
-      <small id="authMsg" class="muted"></small>
-    </div>
-    <div class="row wrap">
-      <input id="nick" placeholder="Twój nick" />
-      <button id="saveNick">Zapisz nick</button>
-      <small id="verifyWarn" class="warn hidden">Zweryfikuj email, aby obstawiać.</small>
-    </div>
-  </section>
+    <!-- Zakładki/ekrany -->
+    <main id="screens">
+      <section id="homeTab" class="card tabpanel">
+        <h2>Start</h2>
+        <div id="homeLive"></div>
+        <div class="row wrap">
+          <button id="dailyClaim">Odbierz 2 PONGI</button>
+        </div>
+        <h3 class="mt">Tabela ping-ponga (z arkusza)</h3>
+        <div id="tableTennisBoard" class="list"></div>
+      </section>
 
-  <!-- Mecze -->
-  <section id="matchesTab" class="card tabpanel">
-    <h2>Mecze</h2>
-    <div id="matches" class="list"></div>
-  </section>
+      <section id="liveTab" class="card tabpanel hidden">
+        <h2>Live</h2>
+        <div id="liveMatch"></div>
+      </section>
 
-  <!-- Moje zakłady -->
-  <section id="myBetsTab" class="card tabpanel hidden">
-    <h2>Moje zakłady</h2>
-    <div id="myBets" class="list"></div>
-  </section>
+      <section id="matchesTab" class="card tabpanel hidden">
+        <h2>Mecze</h2>
+        <div id="matches" class="list"></div>
+      </section>
 
-  <!-- Ranking -->
-  <section id="leaderboardTab" class="card tabpanel hidden">
-    <h2>Ranking</h2>
-    <div id="leaderboard" class="list"></div>
-  </section>
+      <section id="ticketsTab" class="card tabpanel hidden">
+        <h2>Kupony</h2>
+        <div class="row">
+          <button class="chip" data-ticket-filter="open">Oczekujące</button>
+          <button class="chip" data-ticket-filter="won">Wygrane</button>
+          <button class="chip" data-ticket-filter="lost">Przegrane</button>
+        </div>
+        <div id="myBets" class="list"></div>
+      </section>
 
-  <!-- Admin -->
-  <section id="adminTab" class="card tabpanel hidden">
-    <h2>Panel hosta</h2>
-    <div class="row wrap">
-      <input id="p1" placeholder="Zawodnik 1">
-      <input id="p2" placeholder="Zawodnik 2">
-      <input id="startAt" type="datetime-local">
-      <button id="addMatch">Dodaj mecz</button>
-      <button id="lockAll">Zamknij wszystkie otwarte</button>
-    </div>
-  </section>
+      <section id="profileTab" class="card tabpanel hidden">
+        <h2>Profil</h2>
+        <div id="profileBox"></div>
+      </section>
 
-  <!-- Modal obstawiania -->
+      <!-- Panel admina jako osobny ekran -->
+      <section id="adminTab" class="card tabpanel hidden">
+        <h2>Panel hosta</h2>
+        <div class="row wrap">
+          <input id="p1" placeholder="Zawodnik 1">
+          <input id="p2" placeholder="Zawodnik 2">
+          <input id="startAt" type="datetime-local">
+          <button id="addMatch">Dodaj mecz</button>
+          <button id="lockAll">Zamknij wszystkie otwarte</button>
+          <button id="importSheet">Import kursów z arkusza</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav">
+      <button class="bn-item active" data-tab="homeTab">🏠<span>Start</span></button>
+      <button class="bn-item" data-tab="liveTab">📡<span>Live</span></button>
+      <button class="bn-item" data-tab="matchesTab">🏓<span>Mecze</span></button>
+      <button class="bn-item" data-tab="ticketsTab">🎟️<span>Kupony</span></button>
+      <button class="bn-item" data-tab="profileTab">👤<span>Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- Bottom sheet: obstawianie -->
   <div id="betModal" class="modal hidden">
     <div class="modal__box">
       <h3>Obstaw</h3>
@@ -100,5 +125,6 @@
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
+
 
 </html>
