@@ -183,3 +183,13 @@ function renderLeaderboard(qs){
     wrap.appendChild(row);
   });
 }
+// Tabs
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(s=>s.classList.add('hidden'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.remove('hidden');
+  };
+});
+
