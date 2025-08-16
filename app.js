@@ -8,6 +8,35 @@ const state = { uid:null, isHost:false, nick:null, balance:0 };
 
 const msg = (t)=> $('authMsg').textContent = t || '';
 
+const toast = (t, ms=1800)=>{ const el=$('toast'); el.textContent=t; el.classList.remove('hidden'); setTimeout(()=>el.classList.add('hidden'), ms); };
+const betModal = {
+  open(mid, m, outcome, price, balance){
+    $('betModal').classList.remove('hidden');
+    $('betInfo').textContent = `${m.p1} vs ${m.p2} | wybór: ${outcome.toUpperCase()} @ ${price} | saldo: ${balance}`;
+    $('stakeInput').value = 10;
+    this._ctx = { mid, m, outcome, price };
+  },
+  close(){ $('betModal').classList.add('hidden'); this._ctx=null; }
+};
+$('betCancel').onclick = ()=> betModal.close();
+$('betConfirm').onclick = async ()=>{
+  const ctx = betModal._ctx; if(!ctx) return;
+  const stake = parseInt($('stakeInput').value,10);
+  if (!Number.isFinite(stake) || stake<=0 || stake>state.balance) { toast('Błędna stawka'); return; }
+  try{
+    const batch = db.batch();
+    const bRef = db.collection('bets').doc();
+    batch.set(bRef, {
+      uid: state.uid, mid: ctx.mid, outcome: ctx.outcome, stake, priceAt: ctx.price,
+      status:'open', payout:0, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    batch.update(db.doc(`players/${state.uid}`), { balance: firebase.firestore.FieldValue.increment(-stake) });
+    await batch.commit();
+    betModal.close();
+    toast('Zakład przyjęty');
+  }catch(e){ toast('Błąd przy dodawaniu'); console.error(e); }
+};
+
 /* Auth UI */
 $('signup').onclick = async () => {
   const e = email.value.trim(), p = pass.value;
