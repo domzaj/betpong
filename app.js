@@ -70,10 +70,21 @@ $('saveNick').onclick = async ()=>{
   await db.doc(`players/${state.uid}`).set({ nick:n }, { merge:true });
 };
 
-auth.onAuthStateChanged(async (user)=>{
+// app.js
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const $ = (id) => document.getElementById(id); // ← tu używasz 'document'
+
+// ...handlers signup/login/reset itd.
+
+auth.onAuthStateChanged(async (user) => {
   $('uid').textContent = user ? `uid: ${user.uid.slice(0,6)}…` : '';
   $('emailBadge').textContent = user?.email ? user.email : '';
   $('verifyWarn').classList.toggle('hidden', !!user?.emailVerified);
+  // dalsza logika: state.uid, isHost, profile, subskrypcje...
+});
 
   if (!user) return;
   state.uid = user.uid;
