@@ -233,3 +233,18 @@ document.querySelectorAll('.tab').forEach(btn=>{
     document.getElementById(btn.dataset.tab).classList.remove('hidden');
   };
 });
+// Bottom nav → przełączanie ekranów
+function showTab(id){
+  document.querySelectorAll('.tabpanel').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.bn-item').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.bn-item[data-tab="${id}"]`)?.classList.add('active');
+  // scroll do góry nowego ekranu
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+document.querySelectorAll('.bn-item').forEach(btn=>{
+  btn.onclick = ()=> showTab(btn.dataset.tab);
+});
+
+// Admin – osobny ekran wywoływany guzikiem w nagłówku
+$('adminBtn').onclick = ()=> showTab('adminTab');
