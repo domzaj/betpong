@@ -14,33 +14,62 @@
 <body>
   <header class="bar">
     <h1>BetPong</h1>
-    <div id="userBox" class="row">
-      <span id="uid"></span>
-      <span id="emailBadge"></span>
-      <span id="balance"></span>
+    <div class="row">
+      <span id="uid" class="muted"></span>
+      <span id="emailBadge" class="badge"></span>
+      <span id="balance" class="badge"></span>
     </div>
   </header>
 
+  <!-- Tabs -->
+  <nav class="tabs">
+    <button class="tab active" data-tab="matchesTab">Mecze</button>
+    <button class="tab" data-tab="myBetsTab">Moje zakłady</button>
+    <button class="tab" data-tab="leaderboardTab">Ranking</button>
+    <button class="tab adminOnly hidden" data-tab="adminTab">Admin</button>
+  </nav>
+
+  <!-- Konto -->
   <section class="card">
     <h2>Konto</h2>
-    <div id="authBox" class="row">
+    <div id="authBox" class="row wrap">
       <input id="email" type="email" placeholder="email">
       <input id="pass" type="password" placeholder="hasło (min 6)">
       <button id="signup">Rejestracja</button>
       <button id="login">Logowanie</button>
       <button id="logout">Wyloguj</button>
       <button id="reset">Reset hasła</button>
-      <small id="authMsg"></small>
+      <small id="authMsg" class="muted"></small>
     </div>
-    <div class="row">
+    <div class="row wrap">
       <input id="nick" placeholder="Twój nick" />
       <button id="saveNick">Zapisz nick</button>
+      <small id="verifyWarn" class="warn hidden">Zweryfikuj email, aby obstawiać.</small>
     </div>
   </section>
 
-  <section id="adminPanel" class="card hidden">
+  <!-- Mecze -->
+  <section id="matchesTab" class="card tabpanel">
+    <h2>Mecze</h2>
+    <div id="matches" class="list"></div>
+  </section>
+
+  <!-- Moje zakłady -->
+  <section id="myBetsTab" class="card tabpanel hidden">
+    <h2>Moje zakłady</h2>
+    <div id="myBets" class="list"></div>
+  </section>
+
+  <!-- Ranking -->
+  <section id="leaderboardTab" class="card tabpanel hidden">
+    <h2>Ranking</h2>
+    <div id="leaderboard" class="list"></div>
+  </section>
+
+  <!-- Admin -->
+  <section id="adminTab" class="card tabpanel hidden">
     <h2>Panel hosta</h2>
-    <div class="row">
+    <div class="row wrap">
       <input id="p1" placeholder="Zawodnik 1">
       <input id="p2" placeholder="Zawodnik 2">
       <input id="startAt" type="datetime-local">
@@ -49,22 +78,27 @@
     </div>
   </section>
 
-  <section class="card">
-    <h2>Mecze</h2>
-    <div id="matches"></div>
-  </section>
+  <!-- Modal obstawiania -->
+  <div id="betModal" class="modal hidden">
+    <div class="modal__box">
+      <h3>Obstaw</h3>
+      <div id="betInfo" class="muted"></div>
+      <div class="row">
+        <label>Stawka</label>
+        <input id="stakeInput" type="number" min="1" step="1" />
+      </div>
+      <div class="row right">
+        <button id="betCancel">Anuluj</button>
+        <button id="betConfirm">Potwierdź</button>
+      </div>
+    </div>
+  </div>
 
-  <section class="card">
-    <h2>Twoje zakłady</h2>
-    <div id="myBets"></div>
-  </section>
-
-  <section class="card">
-    <h2>Ranking</h2>
-    <div id="leaderboard"></div>
-  </section>
+  <!-- Toast -->
+  <div id="toast" class="toast hidden"></div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>
